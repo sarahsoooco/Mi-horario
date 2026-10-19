@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mi horario · Diseño Industrial</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff4e2;--ink:#1b1030;--mut:#6b5d80;--card:#ffffff;--line:#ecdcc2;--acc:#ff2e7e;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#140b2a;--ink:#fff3e0;--mut:#b9abdb;--card:#231648;--line:#3b2a6e}}
+:root[data-theme="dark"]{--bg:#140b2a;--ink:#fff3e0;--mut:#b9abdb;--card:#231648;--line:#3b2a6e}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",sans-serif;
+background-image:radial-gradient(circle at 8% 0%,#ff2e7e44,transparent 38%),radial-gradient(circle at 100% 12%,#6c3bff40,transparent 40%),radial-gradient(circle at 50% 100%,#00c2a833,transparent 45%);background-attachment:fixed;min-height:100vh}
+.wrap{max-width:760px;margin:0 auto;padding:18px 16px 48px}
+header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+h1{font-size:clamp(30px,8vw,46px);line-height:1;margin:0;font-weight:800;letter-spacing:-.02em}
+.sub{margin:6px 0 0;color:var(--mut);font-size:15px}
+.iconbtn{border:2px solid var(--ink);background:var(--card);color:var(--ink);width:42px;height:42px;border-radius:50%;font-size:18px;cursor:pointer;flex:none}
+.legend{display:flex;flex-wrap:wrap;gap:6px;margin:16px 0 4px}
+.chip{font-size:12px;font-weight:700;padding:5px 10px;border-radius:8px;white-space:nowrap}
+.weeks{display:flex;gap:8px;overflow-x:auto;padding:12px 2px 8px;scrollbar-width:none}
+.weeks::-webkit-scrollbar{display:none}
+.wk{flex:none;border:2px solid var(--ink);background:var(--card);color:var(--ink);padding:9px 14px;border-radius:14px;font:inherit;font-weight:700;font-size:14px;cursor:pointer;text-align:left}
+.wk small{display:block;font-weight:500;color:var(--mut);font-size:11px}
+.wk[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.wk[aria-pressed="true"] small{color:var(--bg);opacity:.75}
+.bar{display:flex;gap:8px;align-items:center;margin:6px 0 12px}
+.seg{display:flex;border:2px solid var(--ink);border-radius:999px;overflow:hidden;margin-left:auto}
+.seg button{border:0;background:transparent;color:var(--ink);font:inherit;font-weight:700;font-size:14px;padding:7px 16px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--acc);color:#fff}
+.days{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:16px}
+.day{border:2px solid var(--ink);background:var(--card);color:var(--ink);border-radius:16px;padding:9px 0 8px;font:inherit;cursor:pointer;text-align:center;position:relative}
+.day b{display:block;font-size:22px;line-height:1.1}
+.day span{font-size:12px;color:var(--mut);font-weight:700}
+.day i{display:flex;justify-content:center;gap:3px;margin-top:5px;height:6px}
+.day i u{width:6px;height:6px;border-radius:50%;display:block}
+.day[aria-pressed="true"]{background:var(--acc);border-color:var(--acc);color:#fff;transform:translateY(-3px);box-shadow:0 6px 0 var(--ink)}
+.day[aria-pressed="true"] span{color:#fff}
+.day.hoy::after{content:"hoy";position:absolute;top:-9px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--bg);font-size:10px;font-weight:800;padding:1px 7px;border-radius:99px}
+h2{font-size:22px;margin:0 0 2px}
+.meta{color:var(--mut);margin:0 0 14px;font-size:14px}
+.card{display:flex;gap:14px;border-radius:20px;padding:16px;margin-bottom:10px;position:relative;box-shadow:0 5px 0 rgba(20,10,40,.85)}
+.time{flex:none;width:62px;font-weight:800;font-size:19px;line-height:1.15}
+.time small{display:block;font-size:13px;font-weight:600;opacity:.8}
+.name{font-weight:800;font-size:19px;line-height:1.15}
+.room{margin-top:4px;font-size:14px;font-weight:600;opacity:.88}
+.tag{position:absolute;top:-8px;right:12px;background:#fff;color:#1b1030;font-size:11px;font-weight:800;padding:3px 9px;border-radius:99px;border:2px solid #1b1030}
+.gap{text-align:center;color:var(--mut);font-size:13px;margin:6px 0 14px}
+.empty{border:3px dashed var(--ink);border-radius:22px;padding:34px 16px;text-align:center;font-size:20px;font-weight:700}
+.empty small{display:block;color:var(--mut);font-weight:500;font-size:14px;margin-top:6px}
+.wkday{margin-bottom:18px}
+.wkday h3{margin:0 0 8px;font-size:17px}
+.mini{display:flex;gap:10px;align-items:center;border-radius:12px;padding:9px 12px;margin-bottom:6px;font-weight:700;font-size:15px}
+.mini em{font-style:normal;font-weight:800;min-width:92px}
+.mini s{text-decoration:none;opacity:.8;font-weight:600;margin-left:auto;font-size:13px}
+.free{color:var(--mut);font-size:14px}
+button:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+@media (prefers-reduced-motion:no-preference){.day{transition:transform .15s,box-shadow .15s}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div>
+    <h1>Mi horario</h1>
+    <p class="sub">Diseño Industrial y Desarrollo de Productos · 1º · CEU</p>
+  </div>
+  <button class="iconbtn" id="theme" aria-label="Cambiar tema claro u oscuro">◐</button>
+</header>
+<div class="legend" id="legend"></div>
+<div class="weeks" id="weeks" role="group" aria-label="Semanas"></div>
+<div class="bar">
+  <div class="seg" role="group" aria-label="Vista">
+    <button id="vDay" aria-pressed="true">Día</button>
+    <button id="vWeek" aria-pressed="false">Semana</button>
+  </div>
+</div>
+<div id="app"></div>
+</div>
+<script>
+var SUB={
+  rep:{n:"RePresentación de Formas",c:"#ff2e7e",t:"#fff"},
+  mat:{n:"Matemáticas",c:"#ffc400",t:"#1b1030"},
+  dis:{n:"Diseño Básico",c:"#6c3bff",t:"#fff"},
+  his:{n:"Historia del Arte",c:"#ff6a00",t:"#fff"},
+  fis:{n:"Física",c:"#00c2a8",t:"#04231f"},
+  com:{n:"Communicative Competence",c:"#1e90ff",t:"#fff"},
+  tra:{n:"Competencias Transversales",c:"#b6f23a",t:"#1b1030"}
+};
+var ROOM="E-A1.4";
+var L=["rep 8:30 10:30","mat 11:00 13:00","rep 13:00 15:00"];
+var M=["dis 8:30 10:30","com 11:00 12:00","his 12:00 14:00"];
+var X=["rep 8:30 10:30","tra 11:00 13:00","rep 13:00 15:00"];
+var J1=["mat 8:30 10:30","dis 11:00 13:00"];
+var V=["his 8:30 10:30","fis 11:00 13:00"];
+var FEST="F";
+var WEEKS=[
+ {s:[2026,9,26],d:[L,M,X,J1,V]},
+ {s:[2026,10,2],d:[L,M,X,J1,V]},
+ {s:[2026,10,9],d:[L,M,X,[],V]},
+ {s:[2026,10,16],d:[L,M,X,J1,V]},
+ {s:[2026,10,23],d:[L,M,X,["fis 8:30 10:30","dis 11:00 13:00"],V]},
+ {s:[2026,10,30],d:[L,M,X,["fis 8:30 10:30","fis 11:00 13:00"],V]},
+ {s:[2026,11,7],d:[FEST,FEST,["rep 8:30 10:30","rep 13:00 15:00"],["dis 8:30 10:30","fis 11:00 13:00"],V]},
+ {s:[2026,11,14],ex:1,d:[["dis 9:00 10:00 x"],[],["rep 8:30 13:00 x"],[],["mat 8:30 11:30 x E-A1.4 · E-A1.3"]]}
+];
+var DN=["Lunes","Martes","Miércoles","Jueves","Viernes"],DS=["L","M","X","J","V"];
+var MES=["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+var MS=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+function dt(w,i){return new Date(w.s[0],w.s[1],w.s[2]+i)}
+function mins(t){var p=t.split(":");return +p[0]*60+ +p[1]}
+function fmt(m){return Math.floor(m/60)+":"+("0"+m%60).slice(-2)}
+function parse(str){var p=str.split(" "),x=p[3]==="x";return{k:p[0],a:mins(p[1]),b:mins(p[2]),x:x,room:x&&p.length>4?p.slice(4).join(" "):ROOM}}
+function same(a,b){return a.getFullYear()==b.getFullYear()&&a.getMonth()==b.getMonth()&&a.getDate()==b.getDate()}
+function hrs(m){var h=m/60;return (h%1?h.toFixed(1).replace(".",","):h)+" h"}
+
+var now=new Date(),st={w:0,d:0,v:"day"};
+(function init(){
+  var found=false;
+  for(var i=0;i<WEEKS.length;i++){
+    var end=dt(WEEKS[i],6);
+    if(now<=new Date(end.getFullYear(),end.getMonth(),end.getDate(),23,59)){
+      st.w=i;found=true;
+      for(var j=0;j<5;j++){if(same(dt(WEEKS[i],j),now))st.d=j}
+      break;
+    }
+  }
+  if(!found){st.w=WEEKS.length-1}
+})();
+
+function el(id){return document.getElementById(id)}
+function renderLegend(){
+  el("legend").innerHTML=Object.keys(SUB).map(function(k){var s=SUB[k];return '<span class="chip" style="background:'+s.c+';color:'+s.t+'">'+s.n+'</span>'}).join("")+'<span class="chip" style="background:#e8b7c4;color:#4a1626">Examen</span>';
+}
+function renderWeeks(){
+  el("weeks").innerHTML=WEEKS.map(function(w,i){
+    var a=dt(w,0),b=dt(w,4);
+    var lab=a.getDate()+(a.getMonth()!=b.getMonth()?" "+MS[a.getMonth()]:"")+" – "+b.getDate()+" "+MS[b.getMonth()];
+    return '<button class="wk" data-i="'+i+'" aria-pressed="'+(i==st.w)+'">'+lab+'<small>'+(w.ex?"Exámenes":"Semana "+(i+1))+'</small></button>';
+  }).join("");
+}
+function cardHTML(c,live){
+  var s=SUB[c.k],bg=c.x?"#e8b7c4":s.c,fg=c.x?"#4a1626":s.t;
+  var tag=c.x?"Examen":(live||"");
+  return '<div class="card" style="background:'+bg+';color:'+fg+'">'+(tag?'<span class="tag">'+tag+'</span>':'')+
+  '<div class="time">'+fmt(c.a)+'<small>'+fmt(c.b)+'</small></div><div><div class="name">'+s.n+'</div><div class="room">'+c.room+' · '+hrs(c.b-c.a)+'</div></div></div>';
+}
+function dayHTML(w,i){
+  var data=w.d[i],date=dt(w,i),h='';
+  var title=DN[i]+" "+date.getDate()+" de "+MES[date.getMonth()];
+  if(data===FEST){return '<h2>'+title+'</h2><div class="empty">Festivo 🎈<small>No hay clase este día</small></div>'}
+  var cl=data.map(parse),tot=cl.reduce(function(s,c){return s+c.b-c.a},0);
+  h+='<h2>'+title+'</h2><p class="meta">'+(cl.length?cl.length+(cl.length==1?" clase":" clases")+" · "+hrs(tot):"Sin clases")+'</p>';
+  if(!cl.length)return h+'<div class="empty">Día libre 🎉<small>Aprovecha para adelantar proyectos</small></div>';
+  var today=same(date,now),nm=now.getHours()*60+now.getMinutes(),nextSet=false;
+  cl.forEach(function(c,n){
+    var live="";
+    if(today){
+      if(nm>=c.a&&nm<c.b)live="Ahora";
+      else if(nm<c.a&&!nextSet){live="Siguiente";nextSet=true}
+    }
+    if(n>0&&c.a>cl[n-1].b)h+='<div class="gap">Hueco de '+hrs(c.a-cl[n-1].b)+'</div>';
+    h+=cardHTML(c,live);
+  });
+  return h;
+}
+function render(){
+  var w=WEEKS[st.w];
+  renderWeeks();
+  var h="";
+  if(st.v==="day"){
+    h+='<div class="days">'+DS.map(function(l,i){
+      var d=dt(w,i),data=w.d[i],n=data===FEST?0:data.length;
+      var dots=data===FEST?'<u style="background:#999"></u>':data.map(function(s){var c=parse(s);return '<u style="background:'+(c.x?"#e8b7c4":SUB[c.k].c)+'"></u>'}).join("");
+      return '<button class="day'+(same(d,now)?" hoy":"")+'" data-d="'+i+'" aria-pressed="'+(i==st.d)+'"><span>'+l+'</span><b>'+d.getDate()+'</b><i>'+dots+'</i></button>';
+    }).join("")+'</div>'+dayHTML(w,st.d);
+  }else{
+    h=DS.map(function(l,i){
+      var d=dt(w,i),data=w.d[i];
+      var body=data===FEST?'<div class="free">Festivo 🎈</div>':(data.length?data.map(function(s){
+        var c=parse(s),sb=SUB[c.k];
+        return '<div class="mini" style="background:'+(c.x?"#e8b7c4":sb.c)+';color:'+(c.x?"#4a1626":sb.t)+'"><em>'+fmt(c.a)+' – '+fmt(c.b)+'</em>'+sb.n+(c.x?" (examen)":"")+'<s>'+c.room+'</s></div>';
+      }).join(""):'<div class="free">Día libre 🎉</div>');
+      return '<div class="wkday"><h3>'+DN[i]+" "+d.getDate()+" "+MS[d.getMonth()]+(same(d,now)?" · hoy":"")+'</h3>'+body+'</div>';
+    }).join("");
+  }
+  el("app").innerHTML=h;
+  el("vDay").setAttribute("aria-pressed",st.v==="day");
+  el("vWeek").setAttribute("aria-pressed",st.v==="week");
+}
+document.addEventListener("click",function(e){
+  var t=e.target.closest("button");if(!t)return;
+  if(t.dataset.i!==undefined){st.w=+t.dataset.i;render()}
+  else if(t.dataset.d!==undefined){st.d=+t.dataset.d;render()}
+  else if(t.id==="vDay"){st.v="day";render()}
+  else if(t.id==="vWeek"){st.v="week";render()}
+  else if(t.id==="theme"){
+    var r=document.documentElement,dark=r.dataset.theme?r.dataset.theme==="dark":matchMedia("(prefers-color-scheme: dark)").matches;
+    r.dataset.theme=dark?"light":"dark";
+    try{localStorage.setItem("theme",r.dataset.theme)}catch(x){}
+  }
+});
+try{var sv=localStorage.getItem("theme");if(sv)document.documentElement.dataset.theme=sv}catch(x){}
+renderLegend();render();
+setInterval(function(){now=new Date();if(st.v==="day")render()},60000);
+</script>
+</body>
+</html>
